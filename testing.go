@@ -12,15 +12,15 @@ type myString string
 
 type myArray []int
 
+type myMap map[rune]int
+
 func (s myString) Encrypt() interface{} {
-	letterMapping := "UMRSQPBOLEXTZYAKJVCNHDWGIF"
-	result := ""
+	var result []int
 	for _, char := range s {
+
 		if 'A' <= char && char <= 'Z' {
-			index := char - 'A'
-			result += string(letterMapping[index])
-		} else {
-			result += string(char)
+
+			result = append(result, int(char-64))
 		}
 	}
 	return result
@@ -34,6 +34,13 @@ func (ia myArray) Encrypt() interface{} {
 		} else {
 			result[i] = 3*num + 1
 		}
+	}
+	return result
+}
+func (m myMap) Encrypt() interface{} {
+	var result []int
+	for key, value := range m {
+		result = append(result, int(key)+value)
 	}
 	return result
 }
@@ -65,5 +72,19 @@ func main() {
 	} else {
 		fmt.Println("Enter size>0")
 	}
+	var m myMap
+	var size2 int
+	fmt.Println("Enter number of entries in map")
+	fmt.Scanln(size2)
+	fmt.Println("Enter key-value pairs for the map (e.g., 'a 10 b 20'):")
+	m = make(myMap)
+
+	for i := 0; i < size2; i++ {
+		var key rune
+		var value int
+		fmt.Scan(&key, &value)
+		m[key] = value
+	}
+	printCipher(m)
 
 }
